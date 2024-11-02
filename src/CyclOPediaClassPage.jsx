@@ -33,10 +33,32 @@ class CyclOPediaClassPage extends React.Component {
       });
     }
   };
-  componentDidUpdate() {
+  componentDidUpdate = async (previousProps, previousState) => {
     console.log("component Did Update");
     localStorage.setItem("Clclopedia", JSON.stringify(this.state));
-  }
+
+    console.log("New state " + this.state.studentCount);
+    console.log("old state " + previousState.studentCount);
+    if (previousState.studentCount < this.state.studentCount) {
+      const response = await RandomUserApi();
+      this.setState((previous) => {
+        return {
+          studentList: [
+            ...previous.studentList,
+            {
+              name: response.data.first_name + " " + response.data.last_name,
+            },
+          ],
+        };
+      });
+    } else if (previousState.studentCount > this.state.studentCount) {
+      this.setState(() => {
+        return {
+          studentList: [],
+        };
+      });
+    }
+  };
   componentWillUnmount() {
     console.log("component Will Unmount");
   }
@@ -58,13 +80,25 @@ class CyclOPediaClassPage extends React.Component {
       };
     });
   };
+
+  handlehideInstructor = () => {
+    this.setState((previous) => {
+      return {
+        hideInstructor: !previous.hideInstructor,
+      };
+    });
+  };
   render() {
     console.log("render component");
     return (
       <div>
         {this.state.instructor && (
           <div className="p-3">
-            <Instructor instructor={this.state.instructor} />
+            <Instructor
+              instructor={this.state.instructor}
+              hideInstructor={this.state.hideInstructor}
+              handlehideInstructor={this.handlehideInstructor}
+            />
           </div>
         )}
         <div className="p-3">
@@ -107,6 +141,13 @@ class CyclOPediaClassPage extends React.Component {
           >
             Remove All Student
           </button>
+          {this.state.studentList.map((student, index) => {
+            return (
+              <div className="text-white" key={index}>
+                {student.name}
+              </div>
+            );
+          })}
         </div>
       </div>
     );
