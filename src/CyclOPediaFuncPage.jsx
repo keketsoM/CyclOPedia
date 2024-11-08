@@ -1,9 +1,9 @@
 import Instructor from "Instructor";
-import React from "react";
+import React, { useState } from "react";
 import RandomUserApi from "Utility/Api";
 
-class CyclOPediaClassPage extends React.Component {
-  constructor(props) {
+const CyclOPediaClassPage =()=> {
+ /* constructor(props) {
     super(props);
     this.state = {
       instructor: undefined,
@@ -13,8 +13,24 @@ class CyclOPediaClassPage extends React.Component {
       inputname: "",
       inputFeedback: "",
     };
-  }
-  componentDidMount = async () => {
+  }*/
+  const [instructor,setStateInstructor] = useState(()=>{
+    return{
+      instructor: undefined,
+      studentList: [],
+      studentCount: 0,
+      hideInstructor: false,
+    }
+  });
+  const [inputname,setStateName] = useState(()=>{
+    return "";
+  });
+
+  const [inputFeedback,setStateinputFeedback] = useState(()=>{
+    return "";
+  });
+
+ /* componentDidMount = async () => {
     console.log("component Did Mount");
     const response = await RandomUserApi();
     console.log(response);
@@ -62,42 +78,44 @@ class CyclOPediaClassPage extends React.Component {
   componentWillUnmount() {
     console.log("component Will Unmount");
   }
-
-  handleAddStudent = () => {
+*/
+ const handleAddStudent = () => {
     console.log("addStudent");
-    this.setState((previous) => {
+    setStateInstructor((previous) => {
       return {
+        ...previous,
         studentCount: previous.studentCount + 1,
       };
     });
   };
 
-  handleRemoveAllStudent = () => {
+  const handleRemoveAllStudent = () => {
     console.log("addStudent");
-    this.setState(() => {
+    setStateInstructor((previous,) => {
       return {
+        ...previous,
         studentCount: 0,
       };
     });
   };
 
-  handlehideInstructor = () => {
-    this.setState((previous) => {
+  const  handlehideInstructor = () => {
+    setStateInstructor((previous) => {
       return {
+        ...previous,
         hideInstructor: !previous.hideInstructor,
       };
     });
   };
-  render() {
-    console.log("render component");
+
     return (
       <div>
-        {this.state.instructor && (
+        {instructor.instructor && (
           <div className="p-3">
             <Instructor
-              instructor={this.state.instructor}
-              hideInstructor={this.state.hideInstructor}
-              handlehideInstructor={this.handlehideInstructor}
+              instructor={instructor.instructor}
+              hideInstructor={instructor.hideInstructor}
+              handlehideInstructor={instructor.handlehideInstructor}
             />
           </div>
         )}
@@ -108,40 +126,40 @@ class CyclOPediaClassPage extends React.Component {
             type="text"
             placeholder="Name.."
             className="form-control"
-            value={this.state.inputname}
+            value={inputname}
             onChange={(e) => {
-              this.setState({ inputname: e.target.value.trim() });
+              this.setState(e.target.value.trim());
             }}
           ></input>
-          <br />
-          value:{this.state.inputname}
+          <br/>
+          value:{inputname}
           <textarea
             className="form-control"
             placeholder="Feedback..."
-            value={this.state.inputFeedback}
+            value={inputFeedback}
             onChange={(e) => {
-              this.setState({ inputFeedback: e.target.value.trim() });
+              this.setState(e.target.value.trim());
             }}
           ></textarea>
         </div>
         <div className="p-3">
           <span className="h4 text-success">Students</span>
-          <br />
-          <div>Student Count: {this.state.studentCount}</div>
+          <br/>
+          <div>Student Count: {instructor.studentCount}</div>
           <button
             className="btn btn-success btn-sm"
-            onClick={this.handleAddStudent}
+            onClick={handleAddStudent}
           >
             Add Student
           </button>
           &nbsp;
           <button
             className="btn btn-danger btn-sm"
-            onClick={this.handleRemoveAllStudent}
+            onClick={handleRemoveAllStudent}
           >
             Remove All Student
           </button>
-          {this.state.studentList.map((student, index) => {
+          {instructor.studentList.map((student, index) => {
             return (
               <div className="text-white" key={index}>
                 {student.name}
@@ -151,6 +169,5 @@ class CyclOPediaClassPage extends React.Component {
         </div>
       </div>
     );
-  }
 }
 export default CyclOPediaClassPage;
