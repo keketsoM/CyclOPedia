@@ -143,7 +143,7 @@ const CyclOPediaClassPage = () => {
 
   return (
     <div>
-      {instructor.instructor && (
+      {instructor.instructor !== undefined ? (
         <div className="p-3">
           <Instructor
             instructor={instructor.instructor}
@@ -151,6 +151,8 @@ const CyclOPediaClassPage = () => {
             handlehideInstructor={handlehideInstructor}
           />
         </div>
+      ) : (
+        <div>API did not load Instructor, Reload </div>
       )}
       <div className="p-3">
         <span className="h4 text-success">FeedBack</span>
