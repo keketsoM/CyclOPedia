@@ -48,43 +48,41 @@ const CyclOPediaClassPage = () => {
         };
       });
     };
-    if (instructor.hideInstructor) {
+    if (!instructor.hideInstructor) {
       getuser();
     }
   }, [instructor.hideInstructor]);
 
-  useEffect(
-    (previousProps, previousState) => {
-      console.log(
-        "This will be called on whenever value of studentList changes"
-      );
+  useEffect(() => {
+    console.log("This will be called on whenever value of studentList changes");
 
-      var addStudentList = async () => {
-        if (previousState.studentCount < instructor.studentCount) {
-          const response = await RandomUserApi();
-          this.setState((previous) => {
-            return {
-              studentList: [
-                ...previous.studentList,
-                {
-                  name:
-                    response.data.first_name + " " + response.data.last_name,
-                },
-              ],
-            };
-          });
-        } else if (previousState.studentCount > this.state.studentCount) {
-          this.setState(() => {
-            return {
-              studentList: [],
-            };
-          });
-        }
-      };
+    var addStudentList = async () => {
+      const response = await RandomUserApi();
+      setStateInstructor((previous) => {
+        return {
+          ...previous,
+          studentList: [
+            ...previous.studentList,
+            {
+              name: response.data.first_name + " " + response.data.last_name,
+            },
+          ],
+        };
+      });
+    };
+    if (instructor.studentList.length < instructor.studentCount) {
       addStudentList();
-    },
-    [instructor.studentList]
-  );
+    } else if (instructor.studentList.length > instructor.studentCount) {
+      if (instructor.studentCount === 0) {
+        setStateInstructor((previous) => {
+          return {
+            ...previous,
+            studentList: [],
+          };
+        });
+      }
+    }
+  }, [instructor.studentCount]);
 
   useEffect(() => {
     console.log("This will be called on Initial/first Render Mount");
@@ -209,7 +207,9 @@ const CyclOPediaClassPage = () => {
       <div className="p-3">
         <span className="h4 text-success">Students</span>
         <br />
-        <div>Student Count: {instructor.studentCount}</div>
+        <div className="text-white">
+          Student Count: {instructor.studentCount}
+        </div>
         <button className="btn btn-success btn-sm" onClick={handleAddStudent}>
           Add Student
         </button>
