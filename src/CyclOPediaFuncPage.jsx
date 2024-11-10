@@ -48,14 +48,43 @@ const CyclOPediaClassPage = () => {
         };
       });
     };
-    getuser();
-  }, []);
-
-  useEffect(() => {
-    console.log(
-      "This will be called on whenever value of hideInstructor changes"
-    );
+    if (instructor.hideInstructor) {
+      getuser();
+    }
   }, [instructor.hideInstructor]);
+
+  useEffect(
+    (previousProps, previousState) => {
+      console.log(
+        "This will be called on whenever value of studentList changes"
+      );
+
+      var addStudentList = async () => {
+        if (previousState.studentCount < instructor.studentCount) {
+          const response = await RandomUserApi();
+          this.setState((previous) => {
+            return {
+              studentList: [
+                ...previous.studentList,
+                {
+                  name:
+                    response.data.first_name + " " + response.data.last_name,
+                },
+              ],
+            };
+          });
+        } else if (previousState.studentCount > this.state.studentCount) {
+          this.setState(() => {
+            return {
+              studentList: [],
+            };
+          });
+        }
+      };
+      addStudentList();
+    },
+    [instructor.studentList]
+  );
 
   useEffect(() => {
     console.log("This will be called on Initial/first Render Mount");

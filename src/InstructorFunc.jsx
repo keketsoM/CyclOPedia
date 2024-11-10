@@ -1,23 +1,8 @@
 import React, { useEffect } from "react";
 const Instructor = (props) => {
   useEffect(() => {
-    console.log("This will be called on every render");
-  });
-
-  useEffect(() => {
-    console.log("This will be called on Initial/first Render Mount");
-  }, []);
-
-  useEffect(() => {
-    console.log(
-      "This will be called on whenever value of hideInstructor changes"
-    );
-  }, [props.Instructor]);
-
-  useEffect(() => {
-    console.log("This will be called on Initial/first Render Mount");
     return () => {
-      console.log("This will be called on when components will be unmounted");
+      console.log("instructor - unmounted");
     };
   });
   return (
