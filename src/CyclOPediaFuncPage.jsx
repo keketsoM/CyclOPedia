@@ -26,6 +26,8 @@ const CyclOPediaClassPage = () => {
     return "";
   });
   const totalRender = useRef(0);
+  const previousStudentCount = useRef(0);
+
   const [inputFeedback, setStateinputFeedback] = useState(() => {
     return "";
   });
@@ -71,9 +73,9 @@ const CyclOPediaClassPage = () => {
         };
       });
     };
-    if (instructor.studentList.length < instructor.studentCount) {
+    if (previousStudentCount.current < instructor.studentCount) {
       addStudentList();
-    } else if (instructor.studentList.length > instructor.studentCount) {
+    } else if (previousStudentCount.current > instructor.studentCount) {
       if (instructor.studentCount === 0) {
         setStateInstructor((previous) => {
           return {
@@ -91,6 +93,10 @@ const CyclOPediaClassPage = () => {
       console.log("This will be called on when components will be unmounted");
     };
   }, []);
+  useEffect(() => {
+    console.log("This will be called on Every Render");
+    previousStudentCount.current = instructor.studentCount;
+  }, [instructor.studentCount]);
   /* componentDidMount = async () => {
     console.log("component Did Mount");
     const response = await RandomUserApi();
