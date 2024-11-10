@@ -1,5 +1,5 @@
 import Instructor from "Instructor";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import RandomUserApi from "Utility/Api";
 
 const CyclOPediaClassPage = () => {
@@ -25,12 +25,13 @@ const CyclOPediaClassPage = () => {
   const [inputname, setStateName] = useState(() => {
     return "";
   });
-
+  const totalRender = useRef(0);
   const [inputFeedback, setStateinputFeedback] = useState(() => {
     return "";
   });
   useEffect(() => {
     console.log("This will be called on Every Render");
+    totalRender.current += 1;
   });
 
   useEffect(() => {
@@ -181,6 +182,7 @@ const CyclOPediaClassPage = () => {
       ) : (
         <div>API did not load Instructor, Reload </div>
       )}
+      <div>Render: {totalRender.current}</div>
       <div className="p-3">
         <span className="h4 text-success">FeedBack</span>
         <br />
