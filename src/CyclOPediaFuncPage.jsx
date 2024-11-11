@@ -27,12 +27,14 @@ const CyclOPediaClassPage = () => {
   });
   const totalRender = useRef(0);
   const previousStudentCount = useRef(0);
+  const focus = useRef("");
 
   const [inputFeedback, setStateinputFeedback] = useState(() => {
     return "";
   });
   useEffect(() => {
     console.log("This will be called on Every Render");
+
     totalRender.current += 1;
   });
 
@@ -88,6 +90,7 @@ const CyclOPediaClassPage = () => {
   }, [instructor.studentCount]);
 
   useEffect(() => {
+    focus.current.focus();
     console.log("This will be called on Initial/first Render Mount");
     return () => {
       console.log("This will be called on when components will be unmounted");
@@ -206,6 +209,7 @@ const CyclOPediaClassPage = () => {
         <textarea
           className="form-control"
           placeholder="Feedback..."
+          ref={focus}
           value={inputFeedback}
           onChange={(e) => {
             setStateinputFeedback(e.target.value.trim());
