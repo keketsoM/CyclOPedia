@@ -1,5 +1,5 @@
 import Instructor from "Instructor";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import RandomUserApi from "Utility/Api";
 
 const CyclOPediaClassPage = () => {
@@ -28,7 +28,7 @@ const CyclOPediaClassPage = () => {
   const totalRender = useRef(0);
   const previousStudentCount = useRef(0);
   const focus = useRef("");
-
+  const id = useId("");
   const [inputFeedback, setStateinputFeedback] = useState(() => {
     return "";
   });
@@ -203,9 +203,10 @@ const CyclOPediaClassPage = () => {
           onChange={(e) => {
             setStateName(e.target.value.trim());
           }}
+          id={`${id}inputname`}
         ></input>
+        <label htmlFor={`${id}inputname`}>value:{inputname}</label>
         <br />
-        value:{inputname}
         <textarea
           className="form-control"
           placeholder="Feedback..."
@@ -214,7 +215,9 @@ const CyclOPediaClassPage = () => {
           onChange={(e) => {
             setStateinputFeedback(e.target.value.trim());
           }}
+          id={`${id}inputFeedback`}
         ></textarea>
+        <label htmlFor={`${id}inputFeedback`}>value: {inputFeedback}</label>
       </div>
       <div className="p-3">
         <span className="h4 text-success">Students</span>
