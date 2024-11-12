@@ -16,12 +16,13 @@ class CyclOPediaClassPage extends React.Component {
   }
   componentDidMount = async () => {
     console.log("component Did Mount");
-    const response = await RandomUserApi();
-    console.log(response);
+
     if (JSON.parse(localStorage.getItem("Clclopedia"))) {
       console.log(JSON.parse(localStorage.getItem("Clclopedia")));
       this.setState(JSON.parse(localStorage.getItem("Clclopedia")));
     } else {
+      const response = await RandomUserApi();
+      console.log(response);
       this.setState((previous) => {
         return {
           instructor: {
